@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "$comment": "Example Switchboard snippets. Copy the entries you want into ~/.claude-switchboard/snippets.json (Switchboard: Open Snippets File). Variables: ${selection}, ${file}, ${clipboard}, ${input:Question}.",
+  "snippets": [
+    {
+      "id": "s-example-explain",
+      "name": "Explain selection",
+      "description": "Understand unfamiliar code before changing it.",
+      "text": "Explain what this code in ${file} does, step by step. Point out anything surprising, any hidden assumptions, and how it is used elsewhere in the project. Don't change any files.\n\n```\n${selection}\n```",
+      "createdAt": 0,
+      "updatedAt": 0
+    },
+    {
+      "id": "s-example-review",
+      "name": "Review file",
+      "description": "Focused review of the open file; asks what to focus on.",
+      "text": "Review ${file} with a focus on ${input:Focus (e.g. error handling, performance)?}. List concrete problems with line numbers, most important first, and suggest a fix for each. Don't edit the file yet.",
+      "createdAt": 0,
+      "updatedAt": 0
+    },
+    {
+      "id": "s-example-tests",
+      "name": "Write tests for selection",
+      "description": "Unit tests that follow the project's existing test style.",
+      "text": "Write unit tests for the following code from ${file}. Follow the style and framework of the existing tests in this project, cover edge cases, and run the tests at the end.\n\n```\n${selection}\n```",
+      "createdAt": 0,
+      "updatedAt": 0
+    },
+    {
+      "id": "s-example-fix-error",
+      "name": "Fix from error",
+      "description": "Paste a stack trace or CI log from the clipboard.",
+      "text": "This error occurs:\n\n```\n${clipboard}\n```\n\nFind the root cause, fix it with the smallest sensible change, and verify the fix. Explain the cause in two sentences.",
+      "createdAt": 0,
+      "updatedAt": 0
+    },
+    {
+      "id": "s-example-commit",
+      "name": "Commit message",
+      "description": "Conventional commit message for the staged changes.",
+      "text": "Look at the staged changes (git diff --cached) and write a conventional commit message: a subject under 72 characters and a short body explaining why. Don't commit.",
+      "createdAt": 0,
+      "updatedAt": 0
+    },
+    {
+      "id": "s-example-plan",
+      "name": "Plan before coding",
+      "description": "A plan without edits, for larger changes.",
+      "text": "I want to: ${input:What do you want to change?}\n\nDon't edit any files yet. Read the relevant code, then give me a short plan: the files to change, the approach, the risks, and how we will test it.",
+      "createdAt": 0,
+      "updatedAt": 0
+    }
+  ]
+}

@@ -1,0 +1,669 @@
+{
+  "name": "switchboard-accounts",
+  "displayName": "Switchboard",
+  "description": "Account switcher, task queues and prompt snippets for Claude Code: see session and weekly limits of all your accounts and switch before you hit them, let several Claude Code chats work through queues of tasks, and reuse prompts. Not affiliated with Anthropic.",
+  "version": "0.4.0",
+  "publisher": "jatqk",
+  "author": "JATQK",
+  "license": "MIT",
+  "preview": true,
+  "pricing": "Free",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1f2233",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JATQK/Switchboard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JATQK/Switchboard/issues"
+  },
+  "homepage": "https://github.com/JATQK/Switchboard#readme",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "claude code",
+    "accounts",
+    "profiles",
+    "usage",
+    "rate limit",
+    "switcher",
+    "queue",
+    "snippets",
+    "prompts"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": "limited",
+      "description": "Queues start and steer Claude Code chats in the workspace, so they are off until you trust the workspace."
+    },
+    "virtualWorkspaces": true
+  },
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "switchboard",
+          "title": "Switchboard",
+          "icon": "media/switchboard.svg"
+        }
+      ]
+    },
+    "views": {
+      "switchboard": [
+        {
+          "type": "webview",
+          "id": "switchboard.panel",
+          "name": "Accounts"
+        },
+        {
+          "type": "webview",
+          "id": "switchboard.queue",
+          "name": "Queues"
+        },
+        {
+          "id": "switchboard.snippets",
+          "name": "Snippets"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "switchboard.switchAccount",
+        "title": "Switch Account…",
+        "category": "Switchboard",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "switchboard.addAccount",
+        "title": "Add Account…",
+        "category": "Switchboard",
+        "icon": "$(add)"
+      },
+      {
+        "command": "switchboard.loginNew",
+        "title": "Log In Another Account…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.addFolder",
+        "title": "Add Existing Claude Config Folder…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.login",
+        "title": "Log In Again…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.refresh",
+        "title": "Refresh",
+        "category": "Switchboard",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "switchboard.openTerminal",
+        "title": "New Claude Terminal (Active Account)",
+        "category": "Switchboard",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "switchboard.moveChats",
+        "title": "Move Running Chats to the Active Account",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.toggleAutoSwitch",
+        "title": "Toggle Auto-Switch",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.enableLiveUsage",
+        "title": "Turn On Live Usage (Status Line)",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.disableLiveUsage",
+        "title": "Turn Off Live Usage (Status Line)",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.dismissLiveUsage",
+        "title": "Hide Live Usage Hint",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.copyShellSetup",
+        "title": "Copy Shell Setup for External Terminals…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.renameAccount",
+        "title": "Rename…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.removeAccount",
+        "title": "Remove…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.moveUp",
+        "title": "Move Up",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.moveDown",
+        "title": "Move Down",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.pauseAuto",
+        "title": "Skip in Auto-Switch",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.resumeAuto",
+        "title": "Use in Auto-Switch",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.revealFolder",
+        "title": "Show Config Folder",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.openSettings",
+        "title": "Open Settings",
+        "category": "Switchboard",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "switchboard.showLog",
+        "title": "Show Log",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.queues.new",
+        "title": "New Queue…",
+        "category": "Switchboard",
+        "icon": "$(add)"
+      },
+      {
+        "command": "switchboard.queues.addTask",
+        "title": "Add Task to a Queue…",
+        "category": "Switchboard",
+        "icon": "$(list-ordered)"
+      },
+      {
+        "command": "switchboard.queues.startChats",
+        "title": "Start Claude Code Chats for a Queue…",
+        "category": "Switchboard",
+        "icon": "$(play)"
+      },
+      {
+        "command": "switchboard.queues.attachChat",
+        "title": "Let a Running Claude Code Chat Work on a Queue…",
+        "category": "Switchboard",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "switchboard.snippets.use",
+        "title": "Use Snippet…",
+        "category": "Switchboard",
+        "icon": "$(symbol-snippet)"
+      },
+      {
+        "command": "switchboard.snippets.new",
+        "title": "New Snippet…",
+        "category": "Switchboard",
+        "icon": "$(add)"
+      },
+      {
+        "command": "switchboard.snippets.newFromSelection",
+        "title": "Save Selection as Snippet…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.snippets.fromHistory",
+        "title": "Save a Recent Prompt as Snippet…",
+        "category": "Switchboard",
+        "icon": "$(history)"
+      },
+      {
+        "command": "switchboard.snippets.insert",
+        "title": "Insert into Claude Code",
+        "category": "Switchboard",
+        "icon": "$(insert)"
+      },
+      {
+        "command": "switchboard.snippets.newChat",
+        "title": "New Claude Code Chat with Snippet",
+        "category": "Switchboard",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "switchboard.snippets.enqueue",
+        "title": "Add Snippet to a Queue…",
+        "category": "Switchboard",
+        "icon": "$(list-ordered)"
+      },
+      {
+        "command": "switchboard.snippets.copy",
+        "title": "Copy Snippet",
+        "category": "Switchboard",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "switchboard.snippets.saveAsCommand",
+        "title": "Save Snippet as Slash Command",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.snippets.edit",
+        "title": "Edit Snippet Text",
+        "category": "Switchboard",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "switchboard.snippets.rename",
+        "title": "Rename Snippet…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.snippets.describe",
+        "title": "Describe Snippet…",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.snippets.delete",
+        "title": "Delete Snippet…",
+        "category": "Switchboard",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "switchboard.snippets.openFile",
+        "title": "Open Snippets File",
+        "category": "Switchboard",
+        "icon": "$(json)"
+      },
+      {
+        "command": "switchboard.copyFromClaude",
+        "title": "Copy from Claude Code…",
+        "category": "Switchboard",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "switchboard.copyLastAnswer",
+        "title": "Copy Last Claude Answer",
+        "category": "Switchboard"
+      },
+      {
+        "command": "switchboard.copyLastPrompt",
+        "title": "Copy Last Claude Prompt",
+        "category": "Switchboard"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "switchboard.moveUp",
+          "when": "false"
+        },
+        {
+          "command": "switchboard.moveDown",
+          "when": "false"
+        },
+        {
+          "command": "switchboard.pauseAuto",
+          "when": "false"
+        },
+        {
+          "command": "switchboard.resumeAuto",
+          "when": "false"
+        },
+        {
+          "command": "switchboard.dismissLiveUsage",
+          "when": "false"
+        },
+        {
+          "command": "switchboard.snippets.newFromSelection",
+          "when": "editorHasSelection"
+        }
+      ],
+      "webview/context": [
+        {
+          "command": "switchboard.moveChats",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account' && sbHasMovableChats",
+          "group": "0_chats@1"
+        },
+        {
+          "command": "switchboard.moveUp",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account' && sbCanMoveUp",
+          "group": "1_order@1"
+        },
+        {
+          "command": "switchboard.moveDown",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account' && sbCanMoveDown",
+          "group": "1_order@2"
+        },
+        {
+          "command": "switchboard.pauseAuto",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account' && !sbExcluded",
+          "group": "2_auto@1"
+        },
+        {
+          "command": "switchboard.resumeAuto",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account' && sbExcluded",
+          "group": "2_auto@1"
+        },
+        {
+          "command": "switchboard.login",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account'",
+          "group": "3_account@1"
+        },
+        {
+          "command": "switchboard.revealFolder",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account'",
+          "group": "3_account@2"
+        },
+        {
+          "command": "switchboard.renameAccount",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account'",
+          "group": "4_edit@1"
+        },
+        {
+          "command": "switchboard.removeAccount",
+          "when": "webviewId == 'switchboard.panel' && webviewSection == 'account' && !sbIsDefault",
+          "group": "4_edit@2"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "switchboard.refresh",
+          "when": "view == switchboard.panel",
+          "group": "navigation@1"
+        },
+        {
+          "command": "switchboard.addAccount",
+          "when": "view == switchboard.panel",
+          "group": "navigation@2"
+        },
+        {
+          "command": "switchboard.openSettings",
+          "when": "view == switchboard.panel",
+          "group": "navigation@3"
+        },
+        {
+          "command": "switchboard.openTerminal",
+          "when": "view == switchboard.panel",
+          "group": "more@1"
+        },
+        {
+          "command": "switchboard.enableLiveUsage",
+          "when": "view == switchboard.panel",
+          "group": "more@2"
+        },
+        {
+          "command": "switchboard.disableLiveUsage",
+          "when": "view == switchboard.panel",
+          "group": "more@3"
+        },
+        {
+          "command": "switchboard.copyShellSetup",
+          "when": "view == switchboard.panel",
+          "group": "more@4"
+        },
+        {
+          "command": "switchboard.showLog",
+          "when": "view == switchboard.panel",
+          "group": "more@5"
+        },
+        {
+          "command": "switchboard.snippets.new",
+          "when": "view == switchboard.snippets",
+          "group": "navigation@1"
+        },
+        {
+          "command": "switchboard.snippets.fromHistory",
+          "when": "view == switchboard.snippets",
+          "group": "navigation@2"
+        },
+        {
+          "command": "switchboard.snippets.openFile",
+          "when": "view == switchboard.snippets",
+          "group": "more@1"
+        },
+        {
+          "command": "switchboard.queues.new",
+          "when": "view == switchboard.queue",
+          "group": "navigation@1"
+        },
+        {
+          "command": "switchboard.queues.startChats",
+          "when": "view == switchboard.queue",
+          "group": "navigation@2"
+        },
+        {
+          "command": "switchboard.queues.attachChat",
+          "when": "view == switchboard.queue",
+          "group": "more@1"
+        },
+        {
+          "command": "switchboard.copyFromClaude",
+          "when": "view == switchboard.queue",
+          "group": "more@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "switchboard.snippets.enqueue",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "inline@1"
+        },
+        {
+          "command": "switchboard.snippets.edit",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "inline@2"
+        },
+        {
+          "command": "switchboard.snippets.insert",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "1_use@1"
+        },
+        {
+          "command": "switchboard.snippets.newChat",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "1_use@2"
+        },
+        {
+          "command": "switchboard.snippets.enqueue",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "1_use@3"
+        },
+        {
+          "command": "switchboard.snippets.copy",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "1_use@4"
+        },
+        {
+          "command": "switchboard.snippets.saveAsCommand",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "2_export@1"
+        },
+        {
+          "command": "switchboard.snippets.edit",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "3_edit@1"
+        },
+        {
+          "command": "switchboard.snippets.rename",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "3_edit@2"
+        },
+        {
+          "command": "switchboard.snippets.describe",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "3_edit@3"
+        },
+        {
+          "command": "switchboard.snippets.delete",
+          "when": "view == switchboard.snippets && viewItem == snippet",
+          "group": "4_delete@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "switchboard.queues.addTask",
+          "when": "editorHasSelection",
+          "group": "switchboard@1"
+        },
+        {
+          "command": "switchboard.snippets.newFromSelection",
+          "when": "editorHasSelection",
+          "group": "switchboard@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Switchboard",
+      "properties": {
+        "switchboard.autoSwitch.enabled": {
+          "type": "boolean",
+          "default": false,
+          "order": 1,
+          "description": "Point new Claude Code sessions at another account when the active one is close to its session or weekly limit."
+        },
+        "switchboard.autoSwitch.sessionThreshold": {
+          "type": "number",
+          "default": 90,
+          "minimum": 1,
+          "maximum": 100,
+          "order": 2,
+          "description": "Switch away when the 5-hour session usage reaches this percentage."
+        },
+        "switchboard.autoSwitch.weeklyThreshold": {
+          "type": "number",
+          "default": 95,
+          "minimum": 1,
+          "maximum": 100,
+          "order": 3,
+          "description": "Switch away when the 7-day weekly usage reaches this percentage."
+        },
+        "switchboard.autoSwitch.strategy": {
+          "type": "string",
+          "enum": [
+            "mostHeadroom",
+            "priority",
+            "soonestWeeklyReset"
+          ],
+          "enumDescriptions": [
+            "Switch to the account with the most remaining capacity.",
+            "Switch to the highest account in your list that has capacity, and move back up the list once a preferred account has reset.",
+            "Use up the weekly quota that expires first: prefer the account whose weekly limit resets soonest, as long as it has session capacity. Moves there on its own once that account's session frees up."
+          ],
+          "default": "mostHeadroom",
+          "order": 4,
+          "description": "Which account auto-switch picks."
+        },
+        "switchboard.autoSwitch.cooldownMinutes": {
+          "type": "number",
+          "default": 5,
+          "minimum": 0,
+          "order": 5,
+          "description": "Minimum minutes between two automatic switches (and after a manual switch)."
+        },
+        "switchboard.moveChatsOnSwitch": {
+          "type": "string",
+          "enum": [
+            "ask",
+            "always",
+            "never"
+          ],
+          "enumDescriptions": [
+            "After a switch, offer to move chats that still run on the previous account.",
+            "Move them without asking (each one once it is idle).",
+            "Leave running chats on their account."
+          ],
+          "default": "ask",
+          "order": 7,
+          "markdownDescription": "A running Claude Code chat keeps the account it started with. Moving it ends its process once it is idle; a panel chat continues the same conversation on the new account with your next message, a terminal chat in a new terminal (`claude --resume`)."
+        },
+        "switchboard.autoSwitch.notify": {
+          "type": "boolean",
+          "default": true,
+          "order": 6,
+          "description": "Show a notification when an automatic switch happens."
+        },
+        "switchboard.refreshIntervalSeconds": {
+          "type": "number",
+          "default": 15,
+          "minimum": 5,
+          "order": 10,
+          "description": "How often to re-read usage from Claude Code's files. This only reads local files; Switchboard makes no network requests."
+        },
+        "switchboard.statusBar.enabled": {
+          "type": "boolean",
+          "default": true,
+          "order": 11,
+          "description": "Show the active account and its usage in the VS Code status bar."
+        },
+        "switchboard.applyToClaudeCodeExtension": {
+          "type": "boolean",
+          "default": true,
+          "order": 20,
+          "markdownDescription": "Also point the Claude Code VS Code extension at the active account, by managing `CLAUDE_CONFIG_DIR` in its `claudeCode.environmentVariables` setting."
+        },
+        "switchboard.shareConfig": {
+          "type": "boolean",
+          "default": true,
+          "order": 21,
+          "markdownDescription": "When adding an account, link its settings, `CLAUDE.md`, skills, agents, commands, plugins and project history to your default Claude config, so every account shares one setup."
+        },
+        "switchboard.claudePath": {
+          "type": "string",
+          "default": "",
+          "order": 22,
+          "markdownDescription": "Path to the `claude` executable. Leave empty to find it on `PATH`, in `~/.local/bin`, or in the Claude Code VS Code extension."
+        }
+      }
+    },
+    "viewsWelcome": [
+      {
+        "view": "switchboard.snippets",
+        "contents": "Save prompts you use often, then insert them into Claude Code, start a chat with them, or queue them.\n[New Snippet](command:switchboard.snippets.new)\n[Save a Recent Prompt…](command:switchboard.snippets.fromHistory)\nSnippets can ask for values: ${selection}, ${file}, ${clipboard}, ${input:Question}."
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "npm run clean && tsc -p .",
+    "watch": "tsc -watch -p .",
+    "lint": "tsc -p . --noEmit",
+    "test": "npm run compile && node --test \"out/test/*.test.js\"",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run compile",
+    "clean": "node -e \"require('fs').rmSync('out',{recursive:true,force:true})\"",
+    "test:integration": "npm run compile && node out/integration/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "~1.90.0",
+    "@vscode/test-electron": "3.1.0",
+    "@vscode/vsce": "4.1.1",
+    "typescript": "^5.6.0"
+  }
+}
